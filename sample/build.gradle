@@ -1,32 +1,119 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.application' // module 类型 appllication -> app library -> 代表android library 或者 java library
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion "24.0.3"
+
+    ////编译版本////////////////////////////////////////////////////////////////////////////////////
+
+    compileSdkVersion 24 //SDK编译版本
+    buildToolsVersion "24.0.1"//构建工具版本 对应buildTool
+
+    /////编译配置///////////////////////////////////////////////////////////////////////////////////
 
     defaultConfig {
-        applicationId "com.yuan.agradle"
-        minSdkVersion 18
-        targetSdkVersion 24
-        versionCode 1
-        versionName "1.0"
+        applicationId "com.yuan.agradle" //配置包名
+        minSdkVersion 18 // 最小支持sdk版本
+        targetSdkVersion 24 // 目标sdk版本
+        versionCode 1//版本号
+        versionName "1.0" //版本名称
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }
-    buildTypes {
-        release {
+
+    ////编译类型////////////////////////////////////////////////////////////////////////////////////
+
+    buildTypes {//表示构建类型 一般有release debug 两种
+        release { //release类型
             minifyEnabled false
+            // 启用混淆
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+
+
     }
+
+    ////签名配置////////////////////////////////////////////////////////////////////////////////////
+
+    signingConfigs {
+        debug {
+            keyAlias 'yuan'
+            keyPassword '12345678'
+            storeFile file("../agradle.jks")//这里我放在project根目录下，根据路径配置
+            storePassword '12345678'
+        }
+        release {
+            keyAlias 'yuan'
+            keyPassword '12345678'
+            storeFile file("../agradle.jks")
+            storePassword '12345678'
+        }
+    }
+
+    ////渠道配置////////////////////////////////////////////////////////////////////////////////////
+
+    productFlavors {//多渠道打包
+        xiaomi { //小米渠道
+            applicationId 'com.yuan.agradle1'//个性定制，小米市场包名不同
+            //以下指定编译资源
+//            java.srcDirs = ['src/main1', 'src/main1/java/']
+//            res.srcDirs = ['src/main1/res']
+//            assets.srcDirs = ['assets1']
+        }
+        googlepaly { //google play 渠道
+            applicationId 'com.yuan.agradle2'
+            //以下指定编译资源
+//            java.srcDirs = ['src/main2', 'src/main2/java/']
+//            res.srcDirs = ['src/main2/res']
+            //           assets.srcDirs = ['assets2']
+        }
+        huawei { //华为渠道
+            applicationId 'com.yuan.agradle3'
+        }
+        baidu { //百度 渠道
+            applicationId 'com.yuan.agradle4'
+        }
+    }
+
+    ////个性配置////////////////////////////////////////////////////////////////////////////////////
+    //修改输出apk名字
+    applicationVariants.all { variant ->
+
+        if (variant.buildType.name.equals('release')) {
+            variant.outputs.each { output ->
+                def appName = 'AGradle'
+                def oldFile = output.outputFile
+                def buildName
+                def releaseApkName
+
+                variant.productFlavors.each { product ->
+                    buildName = product.name
+                }
+
+                releaseApkName = appName + getVersionByMainfest() + '-' + buildName + '-' + getNowTime() + '.apk'
+                output.outputFile = new File(oldFile.parent, releaseApkName)
+            }
+        }
+    }
+
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
     compile 'com.android.support:appcompat-v7:24.0.0-beta1'
     testCompile 'junit:junit:4.12'
+}
+
+
+// ----->  自定义的方法
+//获取时间戳
+def getNowTime() {
+    def date = new Date()
+    def now = date.format('yyyyMMddHHmm')
+    return now
+}
+
+//从androidManifest.xml中获取版本号
+def getVersionByMainfest() {
+    def parser = new com.android.builder.core.DefaultManifestParser()
+    return parser.getVersionName(android.sourceSets.main.manifest.srcFile)
 }
