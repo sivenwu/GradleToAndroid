@@ -23,12 +23,18 @@ android {
     ////编译类型////////////////////////////////////////////////////////////////////////////////////
 
     buildTypes {//表示构建类型 一般有release debug 两种
+
+        debug{
+            buildConfigField 'String','STATE_TEST','"debug"'
+        }
+
         release { //release类型
             minifyEnabled false
             // 启用混淆
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
 
+            buildConfigField 'String','STATE_TEST','"release"'
+        }
 
     }
 
@@ -36,10 +42,7 @@ android {
 
     signingConfigs {
         debug {
-            keyAlias 'yuan'
-            keyPassword '12345678'
-            storeFile file("../agradle.jks")//这里我放在project根目录下，根据路径配置
-            storePassword '12345678'
+
         }
         release {
             keyAlias 'yuan'
@@ -58,6 +61,9 @@ android {
 //            java.srcDirs = ['src/main1', 'src/main1/java/']
 //            res.srcDirs = ['src/main1/res']
 //            assets.srcDirs = ['assets1']
+
+            // 小米渠道配置appkey
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: 'xiaomi_appkey']
         }
         googlepaly { //google play 渠道
             applicationId 'com.yuan.agradle2'
@@ -65,6 +71,9 @@ android {
 //            java.srcDirs = ['src/main2', 'src/main2/java/']
 //            res.srcDirs = ['src/main2/res']
             //           assets.srcDirs = ['assets2']
+
+            // googlepaly渠道配置appkey
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: 'googlepaly_appkey']
         }
         huawei { //华为渠道
             applicationId 'com.yuan.agradle3'

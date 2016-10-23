@@ -10,6 +10,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- 测试appkey -->
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="$UMENG_APPKEY" />
+
     </application>
 
 </manifest>
