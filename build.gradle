@@ -8,6 +8,9 @@ buildscript {
     }
 }
 
+//import
+apply from: 'com_cfg.gradle'
+
 allprojects {
     repositories {
         jcenter()

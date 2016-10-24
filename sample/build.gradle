@@ -1,20 +1,21 @@
-apply plugin: 'com.android.application' // module 类型 appllication -> app library -> 代表android library 或者 java library
+apply plugin: 'com.android.application'
+// module 类型 appllication -> app library -> 代表android library 或者 java library
 
 android {
 
     ////编译版本////////////////////////////////////////////////////////////////////////////////////
 
-    compileSdkVersion 24 //SDK编译版本
-    buildToolsVersion "24.0.1"//构建工具版本 对应buildTool
+    compileSdkVersion BUILD_SDK_VERSION as int //SDK编译版本
+    buildToolsVersion  BUILD_TOOLS_VERSION//构建工具版本 对应buildTool
 
     /////编译配置///////////////////////////////////////////////////////////////////////////////////
 
     defaultConfig {
         applicationId "com.yuan.agradle" //配置包名
-        minSdkVersion 18 // 最小支持sdk版本
-        targetSdkVersion 24 // 目标sdk版本
-        versionCode 1//版本号
-        versionName "1.0" //版本名称
+        minSdkVersion MIN_SDK_VERSION as int // 最小支持sdk版本
+        targetSdkVersion  TARGT_SDK_VERSION as int// 目标sdk版本
+        versionCode VERSION_CODE as int//版本号
+        versionName  VERSION_NAME //版本名称
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -25,7 +26,8 @@ android {
     buildTypes {//表示构建类型 一般有release debug 两种
 
         debug{
-            buildConfigField 'String','STATE_TEST','"debug"'
+            buildConfigField 'String','STATE_TEST','"debug"'//buildConfigField
+            resValue "string", "test_value", "AGradle_debug"//resValue
         }
 
         release { //release类型
@@ -33,7 +35,8 @@ android {
             // 启用混淆
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
-            buildConfigField 'String','STATE_TEST','"release"'
+            buildConfigField 'String','STATE_TEST','"release"' //buildConfigField
+            resValue "string", "test_value", "AGradle_release" //resValue
         }
 
     }
@@ -42,13 +45,16 @@ android {
 
     signingConfigs {
         debug {
-
-        }
+            keyAlias KEY_ALIAS
+            keyPassword KEY_PASSWORD
+            storeFile file(KEY_FILEPATH)
+            storePassword KEY_STORE_PASSWORD
+    }
         release {
-            keyAlias 'yuan'
-            keyPassword '12345678'
-            storeFile file("../agradle.jks")
-            storePassword '12345678'
+            keyAlias KEY_ALIAS
+            keyPassword KEY_PASSWORD
+            storeFile file(KEY_FILEPATH)
+            storePassword KEY_STORE_PASSWORD
         }
     }
 
@@ -63,17 +69,17 @@ android {
 //            assets.srcDirs = ['assets1']
 
             // 小米渠道配置appkey
-            manifestPlaceholders = [UMENG_CHANNEL_VALUE: 'xiaomi_appkey']
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE:UMENG_CHANNEL_VALUE_XIAOMI]
         }
         googlepaly { //google play 渠道
             applicationId 'com.yuan.agradle2'
             //以下指定编译资源
 //            java.srcDirs = ['src/main2', 'src/main2/java/']
 //            res.srcDirs = ['src/main2/res']
-            //           assets.srcDirs = ['assets2']
+//           assets.srcDirs = ['assets2']
 
             // googlepaly渠道配置appkey
-            manifestPlaceholders = [UMENG_CHANNEL_VALUE: 'googlepaly_appkey']
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: UMENG_CHANNEL_VALUE_GOOGLE]
         }
         huawei { //华为渠道
             applicationId 'com.yuan.agradle3'
@@ -102,6 +108,10 @@ android {
                 output.outputFile = new File(oldFile.parent, releaseApkName)
             }
         }
+    }
+
+    lintOptions {
+        abortOnError false
     }
 
 }

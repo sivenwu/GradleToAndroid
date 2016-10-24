@@ -11,6 +11,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Log.i("yuan",BuildConfig.STATE_TEST);
+        Log.i("yuan","\n\n/////////////////////AGradle Log///////////////////////////////////");
+
+        Log.i("yuan","buildConfigField get value : " + getResources().getString(R.string.test_value));
+
+        Log.i("yuan","resVaule get value : " + getResources().getString(R.string.test_value));
+
+        Log.i("yuan","///////////////////////////////////////////////////////////////////\n\n");
+
     }
 }

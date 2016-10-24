@@ -1,0 +1,23 @@
+
+// 通用配置
+ext {
+//    // android
+//    BUILD_SDK_VERSION = 23
+//    BUILD_TOOLS_VERSION  =  "23.0.2"
+//
+//    //build config
+//    MIN_SDK_VERSION  =  18
+//    TARGT_SDK_VERSION  = 24
+//    VERSION_CODE = 1
+//    VERSION_NAME = "1.0"
+
+    //siging 这种不推荐喔
+    KEY_ALIAS = 'yuan'
+    KEY_PASSWORD = '888888'
+    KEY_FILEPATH = "../agradle.jks"
+    KEY_STORE_PASSWORD = '888888'
+
+    //appket
+    UMENG_CHANNEL_VALUE_XIAOMI =  'xiaomi_appkey'
+    UMENG_CHANNEL_VALUE_GOOGLE = 'googlepaly_appkey'
+}
