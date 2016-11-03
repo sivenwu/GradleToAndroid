@@ -31,8 +31,8 @@ android {
         }
 
         release { //release类型
-            minifyEnabled false
-            // 启用混淆
+            minifyEnabled true            // 启用混淆
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
             buildConfigField 'String','STATE_TEST','"release"' //buildConfigField
